@@ -1,0 +1,257 @@
+﻿@{ AppUser user = (AppUser)HttpContext.Current.Session["member"];
+    AppUser userVIP = (AppUser)HttpContext.Current.Session["vip"];}
+<!doctype html>
+<html>
+<head>
+    <!-- jQuery 3.1.1-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="~/OuterTools/js/external/jquery-3.1.1.min.js"><\/script>')</script>
+    <!-- Migrate -->
+    <script src="~/OuterTools/js/external/jquery-migrate-1.2.1.min.js"></script>
+    <!-- Bootstrap 3-->
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <!-- Basic Page Needs -->
+    <meta charset="utf-8">
+    <title>AMovie</title>
+    <meta name="description" content="Ercan Karahan">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="telephone=no" name="format-detection">
+
+    <!-- Fonts -->
+    <!-- Font awesome - icon font -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Roboto -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,700' rel='stylesheet' type='text/css'>
+    <!-- Open Sans -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:800italic' rel='stylesheet' type='text/css'>
+
+    <!-- Stylesheets -->
+    <!-- Mobile menu -->
+    <link href="~/OuterTools/css/gozha-nav.css" rel="stylesheet" />
+    <!-- Select -->
+    <link href="~/OuterTools/css/external/jquery.selectbox.css" rel="stylesheet" />
+
+    <!-- Slider Revolution CSS Files -->
+    <link rel="stylesheet" type="text/css" href="~/OuterTools/revolution/css/settings.css">
+    <link rel="stylesheet" type="text/css" href="~/OuterTools/revolution/css/layers.css">
+    <link rel="stylesheet" type="text/css" href="~/OuterTools/revolution/css/navigation.css">
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+
+    <!-- Custom -->
+    <link href="~/OuterTools/css/style.css?v=1" rel="stylesheet" />
+
+
+    <!-- Modernizr -->
+    <!--<script src="~/OuterTools/js/external/modernizr.custom.js"></script>-->
+
+
+</head>
+
+<body>
+    <div class="wrapper">
+
+
+        <!-- Header section -->
+        <header class="header-wrapper header-wrapper--home">
+            <div class="container">
+                <!-- Logo link-->
+                <a href='@Url.Action("Index", "Home")' class="logo">
+                    @*<img alt='logo' src="~/OuterTools/images/logo.png" />*@
+                </a>
+
+                <!-- Main website navigation-->
+                <nav id="navigation-box">
+                    <!-- Toggle for mobile menu mode -->
+                    <a href="#" id="navigation-toggle">
+                        <span class="menu-icon">
+                            <span class="icon-toggle" role="button" aria-label="Toggle Navigation">
+                                <span class="lines"></span>
+                            </span>
+                        </span>
+                    </a>
+
+                    <!-- Link navigation -->
+                    <ul id="navigation">
+                        <li>
+                            <span class="sub-nav-toggle plus"></span>
+                            @Html.ActionLink("Anasayfa", "Index", "Home")
+                        </li>
+
+                        <li>
+                            <span class="sub-nav-toggle plus"></span>
+                            @Html.ActionLink("Hakkımızda", "About", "Home")
+                        </li>
+                    
+                        <li>
+                            <span class="sub-nav-toggle plus"></span>
+                            @Html.ActionLink("Filmler", "Movie", "Movie")
+
+                        </li>
+                        <li>
+                            <span class="sub-nav-toggle plus"></span>
+                            @Html.ActionLink("Iletişim", "Contact", "Contact")
+                        </li>
+
+                    </ul>
+                </nav>
+
+                @if (Session["member"] != null)
+                {<!-- Additional header buttons / Auth and direct link to booking-->
+                    <div class="control-panel">
+                        <div class="auth auth--home">
+                            <div class="auth__show">
+                                <span class="auth__image">
+                                    <img alt="" src="~/OuterTools/images/client-photo/auth.png">
+                                </span>
+                            </div>
+                            <a href="#" class="btn btn--sign btn--singin">
+                                @user.UserProfile.FirstName @user.UserProfile.LastName
+                            </a>
+                            <ul class="auth__function">
+                                <li><a href="@Url.Action("Logout", "Account")" class="auth__function-item">Güvenli Çıkış</a></li>
+                                <li style="margin-top:10px;" class="text-center"><a href="@Url.Action("SetVip", "Account")" class="btn btn-warning">VIP Uye Ol</a></li>
+                            </ul>
+
+
+                        </div>
+                    </div>}
+                else if (Session["vip"] != null)
+                {<!-- Additional header buttons / Auth and direct link to booking-->
+                    <div class="control-panel">
+                        <div class="auth auth--home">
+                            <div class="auth__show">
+                                <span class="auth__image">
+                                    <img alt="" src="~/OuterTools/images/client-photo/auth.png">
+                                </span>
+                            </div>
+                            <a href="#" class="btn btn--sign btn--singin">
+                                @userVIP.UserProfile.FirstName @userVIP.UserProfile.LastName
+                            </a>
+                            <ul class="auth__function">
+                                <li><a href="@Url.Action("Logout", "Account")" class="auth__function-item">Güvenli Çıkış</a></li>
+                            </ul>
+
+                        </div>
+                    </div> }
+                else
+                {
+                    <div class="control-panel">
+                        <a href="@Url.Action("Login", "Account")" class="btn btn-warning">GİRİŞ YAP</a>
+                        <a href="@Url.Action("EmployeeLogin","PanelAccount", new {Area = "Panel" })" class="btn btn--info">Çalışan Girişi</a>
+
+                    </div>}
+
+            </div>
+        </header>
+
+
+        @RenderBody()
+
+
+        <footer class="footer-wrapper">
+            <section class="container">
+
+                <div style="padding-left:350px;" class="col-xs-12 col-md-12">
+                    <div class="footer-info">
+                        <p class="heading-special--small">SineFlex<br><span class="title-edition">in the social media</span></p>
+
+                        <div class="social">
+                            <a href="#" class="social__variant fa fa-github"></a>
+                            <a href="#" class="social__variant fa fa-medium"></a>
+                            <a href="#" class="social__variant fa fa-facebook"></a>
+                            <a href="#" class="social__variant fa fa-instagram"></a>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <p class="copy">&copy; A.Sinflex,2021.Tüm hakları Saklıdır. Serkan Akçay, Emre Gören, Ercan Karahan, Yusuf Emre</p>
+                    </div>
+                </div>
+            </section>
+        </footer>
+    </div>
+
+    <!-- open/close //javascript acilir kullanici girisi -->
+    <div class="overlay overlay-hugeinc">
+
+        <section class="container">
+
+            <div class="col-sm-4 col-sm-offset-4">
+                <button type="button" class="overlay-close">Close</button>
+                <form id="login-form" class="login" method='get' novalidate=''>
+                    <p class="login__title">sign in <br><span class="login-edition">welcome to A.Movie</span></p>
+
+                    <div class="social social--colored">
+                        <a href='#' class="social__variant fa fa-facebook"></a>
+                        <a href='#' class="social__variant fa fa-twitter"></a>
+                        <a href='#' class="social__variant fa fa-tumblr"></a>
+                    </div>
+
+                    <p class="login__tracker">or</p>
+
+                    <div class="field-wrap">
+                        <input type='email' placeholder='Email' name='user-email' class="login__input">
+                        <input type='password' placeholder='Password' name='user-password' class="login__input">
+
+                        <input type='checkbox' id='#informed' class='login__check styled'>
+                        <label for='#informed' class='login__check-info'>remember me</label>
+                    </div>
+
+                    <div class="login__control">
+                        <button type='submit' class="btn btn-md btn--warning btn--wider">sign in</button>
+                        <a href="#" class="login__tracker form__tracker">Forgot password?</a>
+                    </div>
+                </form>
+            </div>
+
+        </section>
+    </div>
+
+    <!-- JavaScript-->
+    <!-- Slider Revolution core JavaScript files -->
+    <script type="text/javascript" src="~/OuterTools/revolution/js/jquery.themepunch.tools.min.js"></script>
+    <script type="text/javascript" src="~/OuterTools/revolution/js/jquery.themepunch.revolution.min.js"></script>
+
+    <!-- Slider Revolution extension scripts. -->
+    <script type="text/javascript" src="~/OuterTools/revolution/js/extensions/revolution.extension.actions.min.js"></script>
+    <script type="text/javascript" src="~/OuterTools/revolution/js/extensions/revolution.extension.carousel.min.js"></script>
+    <script type="text/javascript" src="~/OuterTools/revolution/js/extensions/revolution.extension.kenburn.min.js"></script>
+    <script type="text/javascript" src="~/OuterTools/revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
+    <script type="text/javascript" src="~/OuterTools/revolution/js/extensions/revolution.extension.migration.min.js"></script>
+    <script type="text/javascript" src="~/OuterTools/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
+    <script type="text/javascript" src="~/OuterTools/revolution/js/extensions/revolution.extension.parallax.min.js"></script>
+    <script type="text/javascript" src="~/OuterTools/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
+    <script type="text/javascript" src="~/OuterTools/revolution/js/extensions/revolution.extension.video.min.js"></script>
+
+    <!-- Mobile menu -->
+    <script src="~/OuterTools/js/jquery.mobile.menu.js"></script>
+    <!-- Select -->
+    <script src="~/OuterTools/js/external/jquery.selectbox-0.2.min.js"></script>
+    <!-- Stars rate -->
+    <script src="~/OuterTools/js/external/jquery.raty.js"></script>
+
+    <!-- Form element -->
+    <script src="~/OuterTools/js/external/form-element.js"></script>
+
+    <!-- Form validation -->
+    <!--<script src="~/OuterTools/js/form.js"></script>-->
+    <!-- Twitter feed -->
+    <script src="~/OuterTools/js/external/twitterfeed.js"></script>
+
+    <!-- Custom -->
+    <script src="~/OuterTools/js/custom.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            init_Home();
+        });
+    </script>
+
+</body>
+</html>
